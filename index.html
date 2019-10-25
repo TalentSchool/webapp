@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Bahnify</title>
+	
+		<link rel="stylesheet" href="css/w3.css">
+		<link rel="stylesheet" href="css/main.css">
+
+		<script src="js/main.js" type="module" defer></script>
+	</head>
+	<body>
+
+		<main>
+			<label for="route">Linie</label>
+			<input class="w3-input" id="route" type="text" placeholder="Die Linie, mit der du fahren willst">
+			<ul id="routeHits" class="w3-ul"></ul>
+
+			<label for="station">Haltestelle</label>
+			<input class="w3-input" id="station" type="text" placeholder="Die Haltestelle, an der du einsteigen willst">
+			<ul id="stationHits" class="w3-ul"></ul>
+	
+			<button id="runBtn" class="w3-button w3-green">Nächsten Abfahrt abfragen</button>
+	
+			<div id="output">
+				noch nix
+			</div>
+		</main>
+
+	</body>
+</html>

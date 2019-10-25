@@ -1,0 +1,57 @@
+body {
+	margin: 0;
+}
+
+main {
+	margin: 8px;
+}
+@media screen and (min-width: 400px) {
+	main {
+		max-width: 400px;
+		margin: 100px auto;
+		border: 1px solid grey;
+		border-radius: 8px;
+		box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+		padding: 8px;
+	}
+}
+
+label, input[type=number], input[type=text] {
+	display: block;
+	font-size: 1em;
+	padding: 8px;
+}
+label {
+	margin-top: 16px;
+}
+
+button {
+	margin: 8px 0;
+}
+
+#output {
+	position: relative;
+	margin: 8px;
+	padding: 8px;
+	border: 2px solid darkgray;
+
+	padding-top: 32px;
+}
+
+#output::before {
+	position: absolute;
+	top: 4px;
+	content: "Antwort:";
+	font-weight: bold;
+}
+
+#stationHits {
+	max-height: 200px;
+	overflow: auto;
+}
+#stationHits:not(:empty) {
+	border: 1px solid grey;
+}
+#stationHits li {
+	cursor: pointer;
+}
