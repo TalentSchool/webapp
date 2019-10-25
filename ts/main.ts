@@ -32,7 +32,7 @@ async function init() {
 			if (askForNotificationPermission()) {
 				notify(`Dein Zug kommt in ${formatTime(time)} Minuten`);
 			}
-			fetch("/playsound.php").then(res => res.text()).then(o => console.log(o));
+			// fetch("/playsound.php").then(res => res.text()).then(o => console.log(o));
 			audio.play();
 		}
 	}, 3000);
@@ -60,20 +60,23 @@ async function getNextDeparture() {
 	let routeLength = getTotalRouteLengthToStation(route);
 	let trainsWithTP = trainsOnRoute.map(t => ({...t, TP: getTotalPos(t)}));
 	let copiedTrains = trainsOnRoute.map(t => ({...t, TP: t.TP - routeLength}))
-	let trains = [...trainsWithTP, ...copiedTrains];
+	// let trains = [...trainsWithTP, ...copiedTrains];
+	let trains = trainsWithTP;
 	trains = trains.filter(t => t.TP < getTotalRouteLengthToStation(route, destinationStationIndex));
+	if (trains.length === 0) return 107;
 	let train = trains.reduce((a, b) => a.TP > a.TP ? a : b);
 	
 	let sec = train.section;
 	let remainingSectionDistance = train.v > 0 ? sec.length - train.pos : train.pos;
 	let remainingSectionTime = (remainingSectionDistance / sec.length) * sec.time;
+	// console.log(remainingSectionDistance, remainingSectionTime);
 	
 	let nextStation = train.v > 0 ? sec.b : sec.a;
 	let nextStationIndex = route.stations.findIndex(s => s.id==nextStation.id);
 	let nextStationDepartureOffset = route.departureOffsets[nextStationIndex];
 
 	let departureDifference = destinationStationDepartureOffset - nextStationDepartureOffset;
-	let totalTimeLeft = departureDifference - remainingSectionTime;
+	let totalTimeLeft = departureDifference + remainingSectionTime;
 
 	return totalTimeLeft;
 }
@@ -83,12 +86,13 @@ function getTotalPos(train: API.Train) {
 	let prevStation = train.v > 0 ? sec.b : sec.a;
 	let prevStationIndex = train.route.stations.findIndex(s => s.id==prevStation.id);
 	let prevDistance = getTotalRouteLengthToStation(train.route, prevStationIndex);
-	let remainingSectionDistance = train.v > 0 ? sec.length - train.pos : train.pos;
-	let totalPos = prevDistance + remainingSectionDistance;
+	let finishedSectionDistance = train.v > 0 ? train.pos : (sec.length - train.pos);
+	let totalPos = prevDistance + finishedSectionDistance;
+	// console.log(prevDistance, finishedSectionDistance, totalPos);
 	return totalPos;
 }
 
-function getTotalRouteLengthToStation(route: API.Route, stationIndex: number=route.stations.length) {
+function getTotalRouteLengthToStation(route: API.Route, stationIndex: number=route.stations.length-2) {
 	let stations = route.stations.slice(0, stationIndex+1);
 	let sections: API.Section[] = [];
 	for (let i = 0 ; i < stations.length-1; i++) {

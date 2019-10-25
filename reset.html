@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Reset</title>
+
+	<script type="module" defer>
+		import * as API from "./js/api.js";
+		(async function() {
+			await API.getObject("resetTrain");
+			document.write("Anfrage gesendet...");
+			let obj = await API.getTrain(1);
+			document.write(JSON.stringify(obj))
+			let pos = obj.pos;
+			document.write("Aktuelle Position: " + pos);
+		})();
+	</script>
+</head>
+<body>
+	Lädt...
+</body>
+</html>
